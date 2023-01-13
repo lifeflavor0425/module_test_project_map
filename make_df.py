@@ -1,10 +1,13 @@
 # 모듈 가져오기
 # Commented out IPython magic to ensure Python compatibility.
 import pandas as pd
+import re
 
 
 """# 서울시 1~9 호선 DF 병합"""
-def make_DataFrame() :
+
+
+def make_DataFrame():
     #  1호선 ~ 9호선
     line_url = [
         "./station_line_urls/station_line1.xlsx",
@@ -24,7 +27,6 @@ def make_DataFrame() :
         line_df.rename(columns=columns, inplace=True)
         return line_df
 
-
     # 병합
     subway_crd = pd.concat(
         [station_lines(url) for url in line_url],
@@ -37,13 +39,17 @@ def make_DataFrame() :
             "Unnamed: 0.1.1",
             "Unnamed: 0.1.1.1",
             # "Unnamed: 0.1.1.1.1",
-            'Unnamed: 0.2',
+            "Unnamed: 0.2",
             "역사_ID",
         ]
     )
+    subway_crd["station"] = subway_crd["station"].apply(lambda x: re.sub(r"\([^)]*\)", "", x))
 
     # 환승역_환승인원정보 DF
-    train_change = pd.read_csv("./station_line_urls/서울교통공사_환승역_환승인원정보_20211231.csv", encoding="cp949")
+    train_change = pd.read_csv(
+        "./station_line_urls/서울교통공사_환승역_환승인원정보_20211231.csv", encoding="cp949"
+    )
+
     subway_crd["if_tf"] = subway_crd["station"].apply(
         lambda x: 1 if x in list(train_change["역명"]) else 0
     )
@@ -51,4 +57,6 @@ def make_DataFrame() :
     subway_location = subway_location.reset_index()
     subway_location = subway_location.sort_values(by="index")
     return subway_location
+
+
 # subway_location.to_excel("./all_station_line.xlsx")
