@@ -30,6 +30,8 @@ reusult_df = pd.merge(
 )
 reusult_df = reusult_df.drop(columns=["level_0", "train_cnt"])
 reusult_df = reusult_df.drop_duplicates(["subway", "station", "if_tf"])
+reusult_df.to_excel("./reusult_df.xlsx")
+
 """# 지도에 1~9호선 그리기"""
 # 노선 색
 fill_color = {
@@ -187,7 +189,7 @@ if input_line == "노선선택":
 else:
     tran_seoul_map = make_map(input_line)
     cal_per_dict = count_(input_line, input_time)
-    # print(cal_per_dict)
+    print(cal_per_dict)
 
 
 """지도 확인"""

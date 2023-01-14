@@ -56,7 +56,5 @@ def make_DataFrame():
     subway_location = subway_crd
     subway_location = subway_location.reset_index()
     subway_location = subway_location.sort_values(by="index")
+    # subway_location.to_excel("./all_station_line.xlsx")
     return subway_location
-
-
-# subway_location.to_excel("./all_station_line.xlsx")
