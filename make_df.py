@@ -47,8 +47,9 @@ def make_DataFrame():
 
     # 환승역_환승인원정보 DF
     train_change = pd.read_csv(
-        "./station_line_urls/서울교통공사_환승역_환승인원정보_20211231.csv", encoding="cp949"
+        "./station_line_urls/환승역_환승인원정보_이수_20211231.csv", encoding="cp949"
     )
+    train_change["역명"] = train_change["역명"].apply(lambda x: re.sub(r"\([^)]*\)", "", x))
 
     subway_crd["if_tf"] = subway_crd["station"].apply(
         lambda x: 1 if x in list(train_change["역명"]) else 0
@@ -56,5 +57,5 @@ def make_DataFrame():
     subway_location = subway_crd
     subway_location = subway_location.reset_index()
     subway_location = subway_location.sort_values(by="index")
-    # subway_location.to_excel("./all_station_line.xlsx")
+    subway_location.to_excel("./all_station_line.xlsx")
     return subway_location

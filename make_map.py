@@ -23,14 +23,13 @@ all_train_info = all_train_info.rename(columns={"line": "subway"})
 all_train_info["subway"] = all_train_info["subway"].apply(lambda x: f"{x}호선")
 all_train_info["station"] = all_train_info["station"].apply(lambda x: re.sub(r"\([^)]*\)", "", x))
 all_train_info["if_tf"] = all_train_info["if_tf"].apply(lambda x: int(x))
-
 # 최종 DF
 reusult_df = pd.merge(
     subway_location, all_train_info, on=["subway", "station", "if_tf"], how="left"
 )
 reusult_df = reusult_df.drop(columns=["level_0", "train_cnt"])
 reusult_df = reusult_df.drop_duplicates(["subway", "station", "if_tf"])
-reusult_df.to_excel("./reusult_df.xlsx")
+reusult_df.to_excel("./result_df.xlsx")
 
 """# 지도에 1~9호선 그리기"""
 # 노선 색
