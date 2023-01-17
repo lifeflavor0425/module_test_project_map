@@ -24,12 +24,10 @@ all_train_info["subway"] = all_train_info["subway"].apply(lambda x: f"{x}호선"
 all_train_info["station"] = all_train_info["station"].apply(lambda x: re.sub(r"\([^)]*\)", "", x))
 all_train_info["if_tf"] = all_train_info["if_tf"].apply(lambda x: int(x))
 # 최종 DF
-reusult_df = pd.merge(
-    subway_location, all_train_info, on=["subway", "station", "if_tf"], how="left"
-)
-reusult_df = reusult_df.drop(columns=["level_0", "train_cnt"])
-reusult_df = reusult_df.drop_duplicates(["subway", "station", "if_tf"])
-reusult_df.to_excel("./result_df.xlsx")
+result_df = pd.merge(subway_location, all_train_info, on=["subway", "station", "if_tf"], how="left")
+result_df = result_df.drop(columns=["level_0", "train_cnt"])
+result_df = result_df.drop_duplicates(["subway", "station", "if_tf"])
+result_df.to_excel("./result_df.xlsx")
 
 """# 지도에 1~9호선 그리기"""
 # 노선 색
@@ -108,11 +106,11 @@ def count_(input_line, input_time):
             one_time_line_stations.append(line)
     cal_per_dict = example.cal_per(input_line, input_time, one_time_line_stations, reusult_df)
     cal_per_cnt = 0
-    for idx in reusult_df.index:  # 데이터 한개씩 뽑아서 역마다 점찍기
-        lat = reusult_df.loc[idx, "lat"]
-        long = reusult_df.loc[idx, "long"]
-        line = reusult_df.loc[idx, "subway"]
-        station = reusult_df.loc[idx, "station"]
+    for idx in result_df.index:  # 데이터 한개씩 뽑아서 역마다 점찍기
+        lat = result_df.loc[idx, "lat"]
+        long = result_df.loc[idx, "long"]
+        line = result_df.loc[idx, "subway"]
+        station = result_df.loc[idx, "station"]
         if input_line == line:  # 입력한 노선만 점 찍기
             folium.Marker(  # 역마다 마커 표시
                 location=[lat, long],
