@@ -104,7 +104,7 @@ def count_(input_line, input_time):
     for line in line_stations[input_line]:
         if line not in one_time_line_stations:
             one_time_line_stations.append(line)
-    cal_per_dict = example.cal_per(input_line, input_time, one_time_line_stations, reusult_df)
+    cal_per_dict = example.cal_per(input_line, input_time, one_time_line_stations, result_df)
     cal_per_cnt = 0
     for idx in result_df.index:  # 데이터 한개씩 뽑아서 역마다 점찍기
         lat = result_df.loc[idx, "lat"]
